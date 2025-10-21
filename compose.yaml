@@ -1,0 +1,6 @@
+﻿services:
+  pilotschoolcheckin:
+    image: pilotschoolcheckin
+    build:
+      context: .
+      dockerfile: Dockerfile
