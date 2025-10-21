@@ -4,7 +4,7 @@ namespace PilotSchoolCheckIn.Repositories;
 
 public interface IUserRepository
 {
-	User GetById(long id);
+	User GetById(int id);
 	
 	void PostUser(User user);
 }

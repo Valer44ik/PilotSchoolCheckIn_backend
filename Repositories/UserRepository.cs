@@ -13,7 +13,7 @@ public class UserRepository : IUserRepository
 		_context = context;
 	}
 
-	public User GetById(long id)
+	public User GetById(int id)
 	{
 		return _context.Users.Find(id);
 	}
@@ -21,5 +21,6 @@ public class UserRepository : IUserRepository
 	public void PostUser(User user)
 	{
 		_context.Users.Add(user);
+		_context.SaveChanges();
 	}
 }

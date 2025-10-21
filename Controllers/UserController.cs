@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PilotSchoolCheckIn.DatabaseTables;
+using PilotSchoolCheckIn.Enums;
 using PilotSchoolCheckIn.Models;
 using PilotSchoolCheckIn.Services;
 
@@ -18,7 +19,7 @@ public class UserController : ControllerBase
 
 	[HttpGet]
 	[Route("{id}")]
-	public ActionResult<User> Get([FromRoute] long id)
+	public ActionResult<User> Get([FromRoute] int id)
 	{
 		var user = _userService.GetById(id);
 		return user;
@@ -27,12 +28,25 @@ public class UserController : ControllerBase
 	[HttpPost("register")]
 	public ActionResult<UserModel> Post([FromBody] UserModel model)
 	{
+		if (!Enum.TryParse(model.Role, out UserRole role))
+		{
+			return BadRequest(ModelState);
+		}
+		
 		if (!ModelState.IsValid)
 		{
 			return BadRequest(ModelState);
 		}
 		
-		_userService.PostUser(model);
+		_userService.PostUser(model, role);
 		return CreatedAtAction(nameof(Get), new { id = model.Id }, model);
+	}
+	
+	// test method
+	[HttpGet]
+	[Route("hello_world")]
+	public ActionResult<string> HelloWorld()
+	{
+		return Content("HelloWorld");
 	}
 }

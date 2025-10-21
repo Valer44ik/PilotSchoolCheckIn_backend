@@ -1,4 +1,5 @@
 using PilotSchoolCheckIn.DatabaseTables;
+using PilotSchoolCheckIn.Enums;
 using PilotSchoolCheckIn.Models;
 using PilotSchoolCheckIn.Repositories;
 
@@ -13,15 +14,15 @@ public class UserService : IUserService
 		_userRepository = userRepository;
 	}
 
-	public User GetById(long id)
+	public User GetById(int id)
 	{
 		return _userRepository.GetById(id);
 	}
 
-	public void PostUser(UserModel model)
+	public void PostUser(UserModel model, UserRole role)
 	{
 		var user = new User(model.Id, model.Name, model.Surname, model.PhoneNumber, model.Password, model.Email, model.Nationality,
-			model.Gender, model.Language, model.Age, model.Program, model.CreatedAt, model.UpdatedAt, model.Role);
+			model.Gender, model.Language, model.Age, model.Program, model.CreatedAt, model.UpdatedAt, role);
 		
 		_userRepository.PostUser(user);
 	}

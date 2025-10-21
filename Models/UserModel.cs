@@ -17,5 +17,5 @@ public class UserModel
 	public required string Program { get; set; }
 	public required DateTime CreatedAt { get; set; }
 	public required DateTime UpdatedAt { get; set; }
-	public UserRole Role { get; set; }
+	public required string Role { get; set; }
 }
