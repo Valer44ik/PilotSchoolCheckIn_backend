@@ -13,7 +13,7 @@ public class UserRepository : IUserRepository
 		_context = context;
 	}
 
-	public User GetById(int id)
+	public User GetById(long id)
 	{
 		return _context.Users.Find(id);
 	}

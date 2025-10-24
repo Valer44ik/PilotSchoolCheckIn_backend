@@ -4,9 +4,9 @@ using PilotSchoolCheckIn.Models;
 
 namespace PilotSchoolCheckIn.Services;
 
-public interface IUserService 
+public interface IPlaneService
 {
-	User GetById(long id);
+	Plane GetById(long id);
 	
-	void PostUser(UserModel user, UserRole role);
+	void PostPlane(PlaneModel model, EngineType engineType);
 }

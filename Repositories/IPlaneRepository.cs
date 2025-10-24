@@ -2,9 +2,9 @@ using PilotSchoolCheckIn.DatabaseTables;
 
 namespace PilotSchoolCheckIn.Repositories;
 
-public interface IUserRepository
+public interface IPlaneRepository
 {
-	User GetById(long id);
+	Plane GetById(long id);
 	
-	void PostUser(User user);
+	void PostPlane(Plane user);
 }

@@ -10,7 +10,7 @@ public sealed class User
 {
 	[Column("id")]
 	[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-	public int Id { get; set; }
+	public long Id { get; set; }
 	
 	[MaxLength(20)]
 	public required string Name { get; set; }
@@ -44,7 +44,7 @@ public sealed class User
 	public UserRole Role { get; set; }
 	
 	[SetsRequiredMembers]
-	public User(int id, string name, string surname, string phoneNumber, string password, string email, string nationality, string gender, string language, uint age, string program, DateTime createdAt, DateTime updatedAt, UserRole role)
+	public User(long id, string name, string surname, string phoneNumber, string password, string email, string nationality, string gender, string language, uint age, string program, DateTime createdAt, DateTime updatedAt, UserRole role)
 	{
 		Id = id;
 		Name = name;

@@ -26,6 +26,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPlaneRepository, PlaneRepository>();
+builder.Services.AddScoped<IPlaneService, PlaneService>();
 
 builder.Services.AddHttpContextAccessor();
 

@@ -19,7 +19,7 @@ public class UserController : ControllerBase
 
 	[HttpGet]
 	[Route("{id}")]
-	public ActionResult<User> Get([FromRoute] int id)
+	public ActionResult<User> Get([FromRoute] long id)
 	{
 		var user = _userService.GetById(id);
 		return user;

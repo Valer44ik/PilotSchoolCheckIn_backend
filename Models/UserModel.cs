@@ -4,7 +4,7 @@ namespace PilotSchoolCheckIn.Models;
 
 public class UserModel
 {
-	public int Id { get; set; }
+	public long Id { get; set; }
 	public required string Name { get; set; }
 	public required string Surname { get; set; }
 	public required string PhoneNumber { get; set; }
