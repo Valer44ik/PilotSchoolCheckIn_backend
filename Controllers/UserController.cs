@@ -18,6 +18,21 @@ public class UserController : ControllerBase
 	}
 
 	[HttpGet]
+	[Route("login/{email}/{password}")]
+	public IActionResult Login(string email, string password)
+	{
+		var user = _userService.GetByEmailPassword(email, password);
+
+		if (user == null)
+		{
+			return NotFound();
+
+		}
+		
+		return Ok(user);
+	}
+	
+	[HttpGet]
 	[Route("{id}")]
 	public ActionResult<User> Get([FromRoute] long id)
 	{

@@ -19,10 +19,15 @@ public class UserService : IUserService
 		return _userRepository.GetById(id);
 	}
 
+	public User? GetByEmailPassword(string email, string password)
+	{
+		return _userRepository.GetByEmailPassword(email, password);
+	}
+
 	public void PostUser(UserModel model, UserRole role)
 	{
 		var user = new User(model.Id, model.Name, model.Surname, model.PhoneNumber, model.Password, model.Email, model.Nationality,
-			model.Gender, model.Language, model.Age, model.Program, model.CreatedAt, model.UpdatedAt, role);
+			model.Gender, model.Language, model.BirthYear, model.Program, model.CreatedAt, model.UpdatedAt, role);
 		
 		_userRepository.PostUser(user);
 	}

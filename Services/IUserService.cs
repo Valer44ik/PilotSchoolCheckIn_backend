@@ -8,5 +8,7 @@ public interface IUserService
 {
 	User GetById(long id);
 	
+	User? GetByEmailPassword(string email, string password);
+	
 	void PostUser(UserModel user, UserRole role);
 }

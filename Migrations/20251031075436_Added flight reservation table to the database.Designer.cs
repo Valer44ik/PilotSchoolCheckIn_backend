@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PilotSchoolCheckIn.Contexts;
@@ -11,9 +12,11 @@ using PilotSchoolCheckIn.Contexts;
 namespace PilotSchoolCheckIn.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    partial class PostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251031075436_Added flight reservation table to the database")]
+    partial class Addedflightreservationtabletothedatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +37,7 @@ namespace PilotSchoolCheckIn.Migrations
                     b.Property<DateTime>("AcceptedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("ClientId")
+                    b.Property<long>("ClientId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
@@ -43,14 +46,15 @@ namespace PilotSchoolCheckIn.Migrations
                     b.Property<DateTime>("EndsAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<long?>("InstructorId")
+                    b.Property<long>("InstructorId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Note")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("character varying(500)");
 
-                    b.Property<long?>("PlaneId")
+                    b.Property<long>("PlaneId")
                         .HasColumnType("bigint");
 
                     b.Property<DateTime>("StartsAt")
@@ -117,8 +121,8 @@ namespace PilotSchoolCheckIn.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateOnly?>("BirthYear")
-                        .HasColumnType("date");
+                    b.Property<long>("Age")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -129,10 +133,12 @@ namespace PilotSchoolCheckIn.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("Gender")
+                        .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("character varying(10)");
 
                     b.Property<string>("Language")
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
@@ -142,6 +148,7 @@ namespace PilotSchoolCheckIn.Migrations
                         .HasColumnType("character varying(20)");
 
                     b.Property<string>("Nationality")
+                        .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
@@ -183,11 +190,15 @@ namespace PilotSchoolCheckIn.Migrations
                 {
                     b.HasOne("PilotSchoolCheckIn.DatabaseTables.User", "User")
                         .WithOne("FlightReservation")
-                        .HasForeignKey("PilotSchoolCheckIn.DatabaseTables.FlightReservation", "InstructorId");
+                        .HasForeignKey("PilotSchoolCheckIn.DatabaseTables.FlightReservation", "InstructorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PilotSchoolCheckIn.DatabaseTables.Plane", "Plane")
                         .WithOne("FlightReservation")
-                        .HasForeignKey("PilotSchoolCheckIn.DatabaseTables.FlightReservation", "PlaneId");
+                        .HasForeignKey("PilotSchoolCheckIn.DatabaseTables.FlightReservation", "PlaneId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Plane");
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PilotSchoolCheckIn.Contexts;
@@ -11,9 +12,11 @@ using PilotSchoolCheckIn.Contexts;
 namespace PilotSchoolCheckIn.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    partial class PostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251107075709_Altered tables and added nullable columns")]
+    partial class Alteredtablesandaddednullablecolumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,8 +120,8 @@ namespace PilotSchoolCheckIn.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<DateOnly?>("BirthYear")
-                        .HasColumnType("date");
+                    b.Property<long?>("Age")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");

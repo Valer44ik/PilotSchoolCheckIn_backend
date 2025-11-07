@@ -24,6 +24,8 @@ public sealed class Plane
 	
 	public EngineType EngineType { get; set; }
 	
+	public FlightReservation FlightReservation { get; set; }
+	
 	[SetsRequiredMembers]
 	public Plane(long id, string model, int boardNumber, DateTime createdAt, DateTime updatedAt, EngineType engineType)
 	{

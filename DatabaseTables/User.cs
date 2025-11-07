@@ -28,14 +28,14 @@ public sealed class User
 	public required string Email { get; set; }
 	
 	[MaxLength(40)]
-	public string Nationality { get; set; }
+	public string? Nationality { get; set; }
 	
 	[MaxLength(10)]
-	public string Gender { get; set; }
+	public string? Gender { get; set; }
 	
 	[MaxLength(40)]
-	public string Language { get; set; }
-	public UInt32 Age { get; set; }
+	public string? Language { get; set; }
+	public DateOnly? BirthYear { get; set; }
 	
 	[MaxLength(500)]
 	public required string Program { get; set; }
@@ -43,8 +43,12 @@ public sealed class User
 	public required DateTime UpdatedAt { get; set; }
 	public UserRole Role { get; set; }
 	
+	public FlightReservation FlightReservation { get; set; }
+	
+	public User() {}
+	
 	[SetsRequiredMembers]
-	public User(long id, string name, string surname, string phoneNumber, string password, string email, string nationality, string gender, string language, uint age, string program, DateTime createdAt, DateTime updatedAt, UserRole role)
+	public User(long id, string name, string surname, string phoneNumber, string password, string email, string? nationality, string? gender, string? language, DateOnly? birthYear, string program, DateTime createdAt, DateTime updatedAt, UserRole role)
 	{
 		Id = id;
 		Name = name;
@@ -55,7 +59,7 @@ public sealed class User
 		Nationality = nationality;
 		Gender = gender;
 		Language = language;
-		Age = age;
+		BirthYear = birthYear;
 		Program = program;
 		CreatedAt = createdAt;
 		UpdatedAt = updatedAt;
