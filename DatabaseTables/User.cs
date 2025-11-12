@@ -21,7 +21,6 @@ public sealed class User
 	[MaxLength(20)]
 	public required string PhoneNumber { get; set; }
 	
-	[MaxLength(20)]
 	public required string Password { get; set; }
 	
 	[MaxLength(50)]

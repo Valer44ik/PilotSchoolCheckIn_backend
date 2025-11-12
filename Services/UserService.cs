@@ -24,9 +24,14 @@ public class UserService : IUserService
 		return _userRepository.GetByEmailPassword(email, password);
 	}
 
-	public void PostUser(UserModel model, UserRole role)
+	public User? GetByEmail(string email)
 	{
-		var user = new User(model.Id, model.Name, model.Surname, model.PhoneNumber, model.Password, model.Email, model.Nationality,
+		return _userRepository.GetByEmail(email);
+	}
+
+	public void PostUser(UserModel model, UserRole role, string hashedPassword)
+	{
+		var user = new User(model.Id, model.Name, model.Surname, model.PhoneNumber, hashedPassword, model.Email, model.Nationality,
 			model.Gender, model.Language, model.BirthYear, model.Program, model.CreatedAt, model.UpdatedAt, role);
 		
 		_userRepository.PostUser(user);

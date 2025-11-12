@@ -18,9 +18,14 @@ public class UserRepository : IUserRepository
 		return _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
 	}
 
-	public User GetById(long id)
+	public User? GetById(long id)
 	{
 		return _context.Users.Find(id);
+	}
+
+	public User? GetByEmail(string email)
+	{
+		return _context.Users.FirstOrDefault(u => u.Email == email);
 	}
 
 	public void PostUser(User user)

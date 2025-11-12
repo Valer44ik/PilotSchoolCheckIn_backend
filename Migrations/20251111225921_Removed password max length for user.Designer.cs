@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PilotSchoolCheckIn.Contexts;
@@ -11,9 +12,11 @@ using PilotSchoolCheckIn.Contexts;
 namespace PilotSchoolCheckIn.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    partial class PostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251111225921_Removed password max length for user")]
+    partial class Removedpasswordmaxlengthforuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,8 +37,8 @@ namespace PilotSchoolCheckIn.Migrations
                     b.Property<DateTime>("AcceptedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("ClientId")
-                        .HasColumnType("uuid");
+                    b.Property<long?>("ClientId")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
@@ -43,8 +46,8 @@ namespace PilotSchoolCheckIn.Migrations
                     b.Property<DateTime>("EndsAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("InstructorId")
-                        .HasColumnType("uuid");
+                    b.Property<long?>("InstructorId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Note")
                         .HasMaxLength(500)
@@ -110,10 +113,12 @@ namespace PilotSchoolCheckIn.Migrations
 
             modelBuilder.Entity("PilotSchoolCheckIn.DatabaseTables.User", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("bigint")
                         .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<DateOnly?>("BirthYear")
                         .HasColumnType("date");

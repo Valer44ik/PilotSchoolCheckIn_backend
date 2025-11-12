@@ -10,5 +10,7 @@ public interface IUserService
 	
 	User? GetByEmailPassword(string email, string password);
 	
-	void PostUser(UserModel user, UserRole role);
+	User? GetByEmail(string email);
+	
+	void PostUser(UserModel user, UserRole role, string hashedPassword);
 }
