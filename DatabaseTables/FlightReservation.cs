@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using PilotSchoolCheckIn.Enums;
 
 namespace PilotSchoolCheckIn.DatabaseTables;
@@ -11,11 +12,11 @@ public sealed class FlightReservation
 	[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 	public long Id { get; set; }
 	
-	public long? ClientId { get; set; }
+	public long ClientId { get; set; }
 	
-	public long? InstructorId { get; set; }
+	public long InstructorId { get; set; }
 	
-	public long? PlaneId { get; set; }
+	public long PlaneId { get; set; }
 	
 	public required DateTime StartsAt { get; set; }
 	
@@ -32,7 +33,23 @@ public sealed class FlightReservation
 	
 	public required DateTime UpdatedAt { get; set; }
 	
-	public User User { get; set; }
+	public required User User { get; set; }
 	
-	public Plane Plane { get; set; }
+	public required Plane Plane { get; set; }
+
+	[SetsRequiredMembers]
+	public FlightReservation(long id, long clientId, long instructorId, long planeId, DateTime startsAt, DateTime endsAt, string note,
+		DateTime createdAt, DateTime updatedAt, FlightStatus status)
+	{
+		Id = id;
+		ClientId = clientId;
+		InstructorId = instructorId;
+		PlaneId = planeId;
+		StartsAt = startsAt;
+		EndsAt = endsAt;
+		Note = note;
+		CreatedAt = createdAt;
+		UpdatedAt = updatedAt;
+		Status = status;
+	}
 }

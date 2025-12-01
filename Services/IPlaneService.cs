@@ -6,7 +6,7 @@ namespace PilotSchoolCheckIn.Services;
 
 public interface IPlaneService
 {
-	Plane GetById(long id);
+	Plane? GetById(long id);
 	
 	void PostPlane(PlaneModel model, EngineType engineType);
 }

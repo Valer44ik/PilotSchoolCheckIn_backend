@@ -2,5 +2,5 @@ namespace PilotSchoolCheckIn.Authentication;
 
 public interface IJwtAuthentication
 {
-	public string GenerateJwtToken(string email);
+	public string GenerateJwtToken(long id);
 }

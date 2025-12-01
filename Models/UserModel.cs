@@ -2,7 +2,7 @@ using PilotSchoolCheckIn.Enums;
 
 namespace PilotSchoolCheckIn.Models;
 
-public class UserModel
+public class RegistrationModel
 {
 	public long Id { get; set; }
 	public required string Name { get; set; }
@@ -13,10 +13,5 @@ public class UserModel
 	public string? Nationality { get; set; }
 	public string? Gender { get; set; }
 	public string? Language { get; set; }
-	
-	public DateOnly? BirthYear { get; set; }
-	public required string Program { get; set; }
-	public required DateTime CreatedAt { get; set; }
-	public required DateTime UpdatedAt { get; set; }
-	public required string Role { get; set; }
+	public string? BirthYear { get; set; }
 }

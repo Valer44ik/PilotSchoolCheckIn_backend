@@ -8,27 +8,6 @@ namespace PilotSchoolCheckIn.Authentication;
 
 public class JwtAuthentication : IJwtAuthentication
 {
-	// public string GenerateJwtToken(string email)
-	// {
-	// 	var claims = new[]
-	// 	{
-	// 		new Claim(JwtRegisteredClaimNames.Sub, email),
-	// 		new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-	// 	};
-	//
-	// 	var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your_super_secret_key"));
-	// 	var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-	//
-	// 	var token = new JwtSecurityToken(
-	// 		issuer: "yourdomain.com",
-	// 		audience: "yourdomain.com",
-	// 		claims: claims,
-	// 		expires: DateTime.Now.AddMinutes(30),
-	// 		signingCredentials: creds);
-	//
-	// 	return new JwtSecurityTokenHandler().WriteToken(token);
-	// }
-
 	private readonly JwtOptions _jwtOptions;
 	
 	public JwtAuthentication(IOptions<JwtOptions> jwtOptions)
@@ -36,9 +15,12 @@ public class JwtAuthentication : IJwtAuthentication
 		_jwtOptions = jwtOptions.Value;
 	}
 	
-	public string GenerateJwtToken(string email)
+	public string GenerateJwtToken(long id)
 	{
-		Claim[] claims = [new("Email", email)];
+		Claim[] claims = 
+		[
+			new("Id", id.ToString()),
+		];
 		
 		var signingCredentials = new SigningCredentials(
 			new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey))

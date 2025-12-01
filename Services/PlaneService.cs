@@ -14,7 +14,7 @@ public class PlaneService : IPlaneService
 		_planeRepository = planeRepository;
 	}
 	
-	public Plane GetById(long id)
+	public Plane? GetById(long id)
 	{
 		return _planeRepository.GetById(id);
 	}

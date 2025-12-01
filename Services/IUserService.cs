@@ -6,11 +6,9 @@ namespace PilotSchoolCheckIn.Services;
 
 public interface IUserService 
 {
-	User GetById(long id);
-	
-	User? GetByEmailPassword(string email, string password);
+	User? GetById(long id);
 	
 	User? GetByEmail(string email);
 	
-	void PostUser(UserModel user, UserRole role, string hashedPassword);
+	void PostUser(RegistrationModel user, UserRole role, DateTime createdAt, DateTime updatedAt, string program, DateOnly? birthYear, string hashedPassword);
 }

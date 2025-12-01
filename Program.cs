@@ -32,6 +32,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPlaneRepository, PlaneRepository>();
 builder.Services.AddScoped<IPlaneService, PlaneService>();
+builder.Services.AddScoped<IFlightReservationService, FlightReservationService>();
+builder.Services.AddScoped<IFlightReservationRepository, FlightReservationRepository>();
 
 builder.Services.AddScoped<IJwtAuthentication, JwtAuthentication>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
@@ -63,6 +65,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowAllWithCredentials", policy =>
+	{
+		policy
+			.SetIsOriginAllowed(origin => true)
+			.AllowAnyHeader()
+			.AllowAnyMethod()
+			.AllowCredentials();
+	});
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -75,6 +89,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAllWithCredentials");
 
 app.MapControllers();
 

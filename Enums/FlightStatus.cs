@@ -4,4 +4,5 @@ public enum FlightStatus
 {
 	Pending,
 	Accepted,
+	Rejected
 }

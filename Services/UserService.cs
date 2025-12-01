@@ -14,14 +14,9 @@ public class UserService : IUserService
 		_userRepository = userRepository;
 	}
 
-	public User GetById(long id)
+	public User? GetById(long id)
 	{
 		return _userRepository.GetById(id);
-	}
-
-	public User? GetByEmailPassword(string email, string password)
-	{
-		return _userRepository.GetByEmailPassword(email, password);
 	}
 
 	public User? GetByEmail(string email)
@@ -29,10 +24,10 @@ public class UserService : IUserService
 		return _userRepository.GetByEmail(email);
 	}
 
-	public void PostUser(UserModel model, UserRole role, string hashedPassword)
+	public void PostUser(RegistrationModel model, UserRole role, DateTime createdAt, DateTime updatedAt, string program, DateOnly? birthYear, string hashedPassword)
 	{
 		var user = new User(model.Id, model.Name, model.Surname, model.PhoneNumber, hashedPassword, model.Email, model.Nationality,
-			model.Gender, model.Language, model.BirthYear, model.Program, model.CreatedAt, model.UpdatedAt, role);
+			model.Gender, model.Language, birthYear, program, createdAt, updatedAt, role);
 		
 		_userRepository.PostUser(user);
 	}

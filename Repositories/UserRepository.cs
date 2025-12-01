@@ -13,11 +13,6 @@ public class UserRepository : IUserRepository
 		_context = context;
 	}
 
-	public User? GetByEmailPassword(string email, string password)
-	{
-		return _context.Users.FirstOrDefault(u => u.Email == email && u.Password == password);
-	}
-
 	public User? GetById(long id)
 	{
 		return _context.Users.Find(id);

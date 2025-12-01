@@ -1,5 +1,7 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using PilotSchoolCheckIn.Authentication;
 using PilotSchoolCheckIn.DatabaseTables;
 using PilotSchoolCheckIn.Enums;
@@ -16,13 +18,15 @@ public class UserController : ControllerBase
 	private readonly IPasswordHasher _passwordHasher;
 	private readonly IJwtAuthentication _jwtAuthentication;
 	private readonly HttpContext _httpContext;
+	private readonly JwtOptions _jwtOptions;
 	
-	public UserController(IUserService userService, IJwtAuthentication jwtAuthentication, IPasswordHasher passwordHasher, IHttpContextAccessor httpContextAccessor)
+	public UserController(IUserService userService, IJwtAuthentication jwtAuthentication, IPasswordHasher passwordHasher, IHttpContextAccessor httpContextAccessor, IOptions<JwtOptions> jwtOptions)
 	{
 		_userService = userService;
 		_jwtAuthentication = jwtAuthentication;
 		_passwordHasher = passwordHasher;
-		_httpContext = httpContextAccessor.HttpContext;
+		_jwtOptions = jwtOptions.Value;
+		_httpContext = httpContextAccessor.HttpContext!;
 	}
 
 	[HttpGet]
@@ -43,26 +47,26 @@ public class UserController : ControllerBase
 	[HttpPost]
 	[Route("login")]
 	[AllowAnonymous]
-	public IActionResult Login([FromQuery]string email, string password)
+	public IActionResult Login([FromBody]LoginModel model)
 	{
-		var user = _userService.GetByEmail(email);
+		var user = _userService.GetByEmail(model.Email);
 
 		if (user == null)
 		{
-			return Unauthorized();
+			return Unauthorized("User not found");
 		}
 		
-		var result = _passwordHasher.VerifyHashedPassword(user.Password, password);
+		var result = _passwordHasher.VerifyHashedPassword(user.Password, model.Password);
 
 		if (result == false)
 		{
-			return Unauthorized();
+			return Unauthorized("Invalid password");
 		}
 		
-		var token = _jwtAuthentication.GenerateJwtToken(email);
+		var token = _jwtAuthentication.GenerateJwtToken(user.Id);
 		_httpContext.Response.Cookies.Append("jwtToken", token);
 		
-		return Ok(new { token });
+		return Ok(new { token, user.Id , expirationDate = DateTimeOffset.UtcNow.AddHours(_jwtOptions.ExpiresHours).ToUnixTimeSeconds() });
 	}
 	
 	[HttpGet]
@@ -76,13 +80,8 @@ public class UserController : ControllerBase
 	
 	[HttpPost("register")]
 	[AllowAnonymous]
-	public ActionResult<UserModel> Register([FromBody] UserModel model)
+	public ActionResult<RegistrationModel> Register([FromBody] RegistrationModel model)
 	{
-		if (!Enum.TryParse(model.Role, out UserRole role))
-		{
-			return BadRequest(ModelState);
-		}
-		
 		if (!ModelState.IsValid)
 		{
 			return BadRequest(ModelState);
@@ -95,16 +94,24 @@ public class UserController : ControllerBase
 			return Conflict("The user with the same email address already exists");
 		}
 		
+		DateOnly.TryParseExact(
+			model.BirthYear,
+			"dd / MM / yyyy",
+			CultureInfo.InvariantCulture,
+			DateTimeStyles.None,
+			out var birthYear
+		);
+		
 		var hashedPassword = _passwordHasher.HashPassword(model.Password);
 		
-		_userService.PostUser(model, role, hashedPassword);
+		_userService.PostUser(model, UserRole.Guest, DateTime.UtcNow, DateTime.UtcNow, "Undefined", birthYear, hashedPassword);
 		return CreatedAtAction(nameof(Get), new { id = model.Id }, model);
 	}
 	
 	// test method
 	[HttpGet]
 	[Authorize]
-	[Route("hello_world")]
+	[Route("hello_world")] 
 	public ActionResult<string> HelloWorld()
 	{
 		return Content("HelloWorld");
