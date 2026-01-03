@@ -18,6 +18,9 @@ public sealed class User
 	[MaxLength(20)]
 	public required string Surname { get; set; }
 	
+	[MaxLength(3)]
+	public string? Abbreviation { get; set; }
+	
 	[MaxLength(20)]
 	public required string PhoneNumber { get; set; }
 	
@@ -42,16 +45,18 @@ public sealed class User
 	public required DateTime UpdatedAt { get; set; }
 	public UserRole Role { get; set; }
 	
-	public FlightReservation FlightReservation { get; set; }
+	public ICollection<FlightReservation> ClientReservations { get; set; } = new List<FlightReservation>();
+	public ICollection<FlightReservation> InstructorReservations { get; set; } = new List<FlightReservation>();
 	
 	public User() {}
 	
 	[SetsRequiredMembers]
-	public User(long id, string name, string surname, string phoneNumber, string password, string email, string? nationality, string? gender, string? language, DateOnly? birthYear, string program, DateTime createdAt, DateTime updatedAt, UserRole role)
+	public User(long id, string name, string surname, string abbreviation, string phoneNumber, string password, string email, string? nationality, string? gender, string? language, DateOnly? birthYear, string program, DateTime createdAt, DateTime updatedAt, UserRole role)
 	{
 		Id = id;
 		Name = name;
 		Surname = surname;
+		Abbreviation = abbreviation;
 		PhoneNumber = phoneNumber;
 		Password = password;
 		Email = email;

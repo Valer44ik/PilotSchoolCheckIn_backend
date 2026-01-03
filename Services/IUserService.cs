@@ -6,6 +6,8 @@ namespace PilotSchoolCheckIn.Services;
 
 public interface IUserService 
 {
+	User?[] GetAllInstructors();
+	
 	User? GetById(long id);
 	
 	User? GetByEmail(string email);

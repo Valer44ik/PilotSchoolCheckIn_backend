@@ -17,6 +17,11 @@ public class FlightReservationRepository : IFlightReservationRepository
 		return _context.FlightReservations.Find(id);
 	}
 
+	public FlightReservation?[] GetOccupiedSlotsForWeek(DateTime startDate, DateTime endDate)
+	{
+		return _context.FlightReservations.Where(f => f.StartsAt >= startDate && f.EndsAt <= endDate).ToArray();
+	}
+
 	public FlightReservation?[] GetCalendarDatesForClient(long clientId)
 	{
 		return _context.FlightReservations.Where(f => f.ClientId == clientId).ToArray();
@@ -30,6 +35,18 @@ public class FlightReservationRepository : IFlightReservationRepository
 	public void CreateReservation(FlightReservation reservation)
 	{
 		_context.FlightReservations.Add(reservation);
+		_context.SaveChanges();
+	}
+
+	public void UpdateReservation(FlightReservation flightReservation)
+	{
+		_context.FlightReservations.Update(flightReservation);
+		_context.SaveChanges();
+	}
+
+	public void DeleteReservation(FlightReservation reservation)
+	{
+		_context.FlightReservations.Remove(reservation);
 		_context.SaveChanges();
 	}
 }

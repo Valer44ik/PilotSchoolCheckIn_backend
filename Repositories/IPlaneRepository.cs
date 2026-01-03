@@ -6,5 +6,7 @@ public interface IPlaneRepository
 {
 	Plane GetById(long id);
 	
+	Plane?[] GetAllPlanes();
+	
 	void PostPlane(Plane user);
 }

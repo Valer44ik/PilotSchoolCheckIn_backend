@@ -8,5 +8,7 @@ public interface IPlaneService
 {
 	Plane? GetById(long id);
 	
+	Plane?[] GetAllPlanes();
+	
 	void PostPlane(PlaneModel model, EngineType engineType);
 }

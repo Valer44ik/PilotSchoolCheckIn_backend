@@ -63,7 +63,7 @@ public class UserController : ControllerBase
 			return Unauthorized("Invalid password");
 		}
 		
-		var token = _jwtAuthentication.GenerateJwtToken(user.Id);
+		var token = _jwtAuthentication.GenerateJwtToken(user.Id, user.Name, user.Surname,  user.Email, user.Role);
 		_httpContext.Response.Cookies.Append("jwtToken", token);
 		
 		return Ok(new { token, user.Id , expirationDate = DateTimeOffset.UtcNow.AddHours(_jwtOptions.ExpiresHours).ToUnixTimeSeconds() });
@@ -73,6 +73,15 @@ public class UserController : ControllerBase
 	[Route("{id}")]
 	[Authorize]
 	public ActionResult<User> Get([FromRoute] long id)
+	{
+		var user = _userService.GetById(id);
+		return user;
+	}
+	
+	[HttpGet]
+	[Route("")]
+	[Authorize]
+	public ActionResult<User> GetById([FromQuery] long id)
 	{
 		var user = _userService.GetById(id);
 		return user;

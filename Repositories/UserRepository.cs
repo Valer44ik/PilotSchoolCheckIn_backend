@@ -1,6 +1,6 @@
 using PilotSchoolCheckIn.Contexts;
 using PilotSchoolCheckIn.DatabaseTables;
-using PilotSchoolCheckIn.Services;
+using PilotSchoolCheckIn.Enums;
 
 namespace PilotSchoolCheckIn.Repositories;
 
@@ -11,6 +11,11 @@ public class UserRepository : IUserRepository
 	public UserRepository(PostgresDbContext context)
 	{
 		_context = context;
+	}
+
+	public User?[] GetAllInstructors()
+	{
+		return _context.Users.Where(f => f.Role == UserRole.Instructor).ToArray();
 	}
 
 	public User? GetById(long id)

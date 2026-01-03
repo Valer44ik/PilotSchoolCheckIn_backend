@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using PilotSchoolCheckIn.Enums;
 
 namespace PilotSchoolCheckIn.Authentication;
 
@@ -15,11 +16,15 @@ public class JwtAuthentication : IJwtAuthentication
 		_jwtOptions = jwtOptions.Value;
 	}
 	
-	public string GenerateJwtToken(long id)
+	public string GenerateJwtToken(long id, string name, string surname, string email, UserRole role)
 	{
 		Claim[] claims = 
 		[
 			new("Id", id.ToString()),
+			new("name", name),
+			new("surname", surname),
+			new("email", email),
+			new("role", role.ToString())
 		];
 		
 		var signingCredentials = new SigningCredentials(

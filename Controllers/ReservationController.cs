@@ -6,6 +6,8 @@ using PilotSchoolCheckIn.Services;
 
 namespace PilotSchoolCheckIn.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
 public class ReservationController : Controller
 {
 	private readonly IUserService _userService;
@@ -26,14 +28,23 @@ public class ReservationController : Controller
 		var reservation = _flightReservationService.GetById(id);
 		return reservation;
 	}
-	
-	// [HttpGet]
-	// [Route("instructors")]
-	// public ActionResult<FlightReservation> GetAllInstructors()
-	// {
-	// 	var instructorsList = _userService.
-	// 	return reservation;
-	// }
+
+	[HttpGet]
+	[Route("instructors")]
+	public ActionResult <User?[]> GetAllInstructors()
+	{
+		var instructorsList = _userService.GetAllInstructors();
+		
+		return instructorsList;
+	}
+
+	[HttpGet]
+	[Route("planes")]
+	public ActionResult<Plane?[]> GetAllPlanes()
+	{
+		var planesList = _planeService.GetAllPlanes();
+		return planesList;
+	}
 	
 	[HttpPost]
 	[Route("reservation")]
@@ -66,5 +77,45 @@ public class ReservationController : Controller
 		
 		_flightReservationService.AddFlightReservation(model, status, DateTime.UtcNow, DateTime.UtcNow);
 		return CreatedAtAction(nameof(Get), new { id = model.Id }, model);
+	}
+	
+	[HttpPut]
+	[Route("approve/{id}")]
+	public ActionResult<FlightReservationModel> ApproveReservation([FromRoute] long id)
+	{
+		if (!ModelState.IsValid)
+		{
+			return BadRequest(ModelState);
+		}
+		
+		var reservation = _flightReservationService.GetById(id);
+		if (reservation == null)
+		{
+			return BadRequest("Reservation not found!");
+		}
+		
+		var status = FlightStatus.Accepted;
+		
+		_flightReservationService.UpdateFlightReservation(id, status, DateTime.UtcNow, DateTime.UtcNow);
+		return Ok(reservation);
+	}
+	
+	[HttpDelete]
+	[Route("reject")]
+	public ActionResult<FlightReservationModel> RejectReservation([FromRoute] long id)
+	{
+		if (!ModelState.IsValid)
+		{
+			return BadRequest(ModelState);
+		}
+		
+		var reservation = _flightReservationService.GetById(id);
+		if (reservation == null)
+		{
+			return BadRequest("Reservation not found!");
+		}
+		
+		_flightReservationService.DeleteFlightReservation(id);
+		return Ok(reservation);
 	}
 }

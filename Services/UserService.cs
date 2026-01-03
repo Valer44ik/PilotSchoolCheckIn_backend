@@ -14,6 +14,11 @@ public class UserService : IUserService
 		_userRepository = userRepository;
 	}
 
+	public User?[] GetAllInstructors()
+	{
+		return _userRepository.GetAllInstructors();
+	}
+
 	public User? GetById(long id)
 	{
 		return _userRepository.GetById(id);
@@ -26,7 +31,7 @@ public class UserService : IUserService
 
 	public void PostUser(RegistrationModel model, UserRole role, DateTime createdAt, DateTime updatedAt, string program, DateOnly? birthYear, string hashedPassword)
 	{
-		var user = new User(model.Id, model.Name, model.Surname, model.PhoneNumber, hashedPassword, model.Email, model.Nationality,
+		var user = new User(model.Id, model.Name, model.Surname, model.Abbreviation, model.PhoneNumber, hashedPassword, model.Email, model.Nationality,
 			model.Gender, model.Language, birthYear, program, createdAt, updatedAt, role);
 		
 		_userRepository.PostUser(user);

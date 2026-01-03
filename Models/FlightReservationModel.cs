@@ -13,9 +13,9 @@ public class FlightReservationModel
 	
 	public required long PlaneId { get; set; }
 	
-	public required DateTime StartsAt { get; set; }
+	public required string StartsAt { get; set; }
 	
-	public required DateTime EndsAt { get; set; }
+	public required string EndsAt { get; set; }
 	
 	[MaxLength(500)]
 	public string? Note { get; set; }

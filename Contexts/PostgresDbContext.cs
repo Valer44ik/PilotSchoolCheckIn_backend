@@ -33,17 +33,17 @@ public class PostgresDbContext : DbContext
 		modelBuilder.Entity<FlightReservation>().ToTable("FlightReservation");
 		modelBuilder.Entity<FlightReservation>().HasKey(fr => fr.Id);
 		modelBuilder.Entity<FlightReservation>().Property(fr => fr.Id).ValueGeneratedOnAdd();
-		modelBuilder.Entity<FlightReservation>().HasOne(fr => fr.User)
-			.WithOne(u => u.FlightReservation)
-			.HasForeignKey<FlightReservation>(fr => fr.ClientId)
-			.HasPrincipalKey<User>(u => u.Id);
-		modelBuilder.Entity<FlightReservation>().HasOne(fr => fr.User)
-			.WithOne(u => u.FlightReservation)
-			.HasForeignKey<FlightReservation>(fr => fr.InstructorId)
-			.HasPrincipalKey<User>(u => u.Id);
+		modelBuilder.Entity<FlightReservation>().HasOne(fr => fr.Client)
+			.WithMany(u => u.ClientReservations)
+			.HasForeignKey(fr => fr.ClientId)
+			.OnDelete(DeleteBehavior.NoAction);
+		modelBuilder.Entity<FlightReservation>().HasOne(fr => fr.Instructor)
+			.WithMany(u => u.InstructorReservations)
+			.HasForeignKey(fr => fr.InstructorId)
+			.OnDelete(DeleteBehavior.NoAction);
 		modelBuilder.Entity<FlightReservation>().HasOne(fr => fr.Plane)
-			.WithOne(p => p.FlightReservation)
-			.HasForeignKey<FlightReservation>(fr => fr.PlaneId)
-			.HasPrincipalKey<Plane>(p => p.Id);
+			.WithMany(p => p.FlightReservations)
+			.HasForeignKey(fr => fr.PlaneId)
+			.OnDelete(DeleteBehavior.NoAction);
 	}
 }

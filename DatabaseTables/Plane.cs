@@ -24,7 +24,7 @@ public sealed class Plane
 	
 	public EngineType EngineType { get; set; }
 	
-	public FlightReservation FlightReservation { get; set; }
+	public ICollection<FlightReservation> FlightReservations { get; set; } = new List<FlightReservation>();
 	
 	[SetsRequiredMembers]
 	public Plane(long id, string model, int boardNumber, DateTime createdAt, DateTime updatedAt, EngineType engineType)

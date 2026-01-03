@@ -17,6 +17,11 @@ public class PlaneRepository : IPlaneRepository
 		return _context.Planes.Find(id);
 	}
 
+	public Plane?[] GetAllPlanes()
+	{
+		return _context.Planes.ToArray();
+	}
+
 	public void PostPlane(Plane plane)
 	{
 		_context.Planes.Add(plane);

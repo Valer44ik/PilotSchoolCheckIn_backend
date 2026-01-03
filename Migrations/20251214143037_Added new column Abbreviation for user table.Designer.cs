@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PilotSchoolCheckIn.Contexts;
@@ -11,9 +12,11 @@ using PilotSchoolCheckIn.Contexts;
 namespace PilotSchoolCheckIn.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    partial class PostgresDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251214143037_Added new column Abbreviation for user table")]
+    partial class AddednewcolumnAbbreviationforusertable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,11 +67,11 @@ namespace PilotSchoolCheckIn.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("InstructorId")
+                        .IsUnique();
 
-                    b.HasIndex("InstructorId");
-
-                    b.HasIndex("PlaneId");
+                    b.HasIndex("PlaneId")
+                        .IsUnique();
 
                     b.ToTable("FlightReservation", (string)null);
                 });
@@ -184,41 +187,33 @@ namespace PilotSchoolCheckIn.Migrations
 
             modelBuilder.Entity("PilotSchoolCheckIn.DatabaseTables.FlightReservation", b =>
                 {
-                    b.HasOne("PilotSchoolCheckIn.DatabaseTables.User", "Client")
-                        .WithMany("ClientReservations")
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("PilotSchoolCheckIn.DatabaseTables.User", "Instructor")
-                        .WithMany("InstructorReservations")
-                        .HasForeignKey("InstructorId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                    b.HasOne("PilotSchoolCheckIn.DatabaseTables.User", "User")
+                        .WithOne("FlightReservation")
+                        .HasForeignKey("PilotSchoolCheckIn.DatabaseTables.FlightReservation", "InstructorId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("PilotSchoolCheckIn.DatabaseTables.Plane", "Plane")
-                        .WithMany("FlightReservations")
-                        .HasForeignKey("PlaneId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithOne("FlightReservation")
+                        .HasForeignKey("PilotSchoolCheckIn.DatabaseTables.FlightReservation", "PlaneId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
-
-                    b.Navigation("Instructor");
-
                     b.Navigation("Plane");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PilotSchoolCheckIn.DatabaseTables.Plane", b =>
                 {
-                    b.Navigation("FlightReservations");
+                    b.Navigation("FlightReservation")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PilotSchoolCheckIn.DatabaseTables.User", b =>
                 {
-                    b.Navigation("ClientReservations");
-
-                    b.Navigation("InstructorReservations");
+                    b.Navigation("FlightReservation")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

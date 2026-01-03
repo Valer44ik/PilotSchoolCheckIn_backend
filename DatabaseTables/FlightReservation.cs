@@ -33,7 +33,9 @@ public sealed class FlightReservation
 	
 	public required DateTime UpdatedAt { get; set; }
 	
-	public required User User { get; set; }
+	public required User Client { get; set; }
+	
+	public required User Instructor { get; set; }
 	
 	public required Plane Plane { get; set; }
 
