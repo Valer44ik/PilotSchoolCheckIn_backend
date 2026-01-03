@@ -80,15 +80,15 @@ public class ReservationController : Controller
 	}
 	
 	[HttpPut]
-	[Route("approve/{id}")]
-	public ActionResult<FlightReservationModel> ApproveReservation([FromRoute] long id)
+	[Route("approve")]
+	public ActionResult<FlightReservationModel> ApproveReservation([FromBody] ClientIdModel model)
 	{
 		if (!ModelState.IsValid)
 		{
 			return BadRequest(ModelState);
 		}
 		
-		var reservation = _flightReservationService.GetById(id);
+		var reservation = _flightReservationService.GetById(model.Id);
 		if (reservation == null)
 		{
 			return BadRequest("Reservation not found!");
@@ -96,13 +96,13 @@ public class ReservationController : Controller
 		
 		var status = FlightStatus.Accepted;
 		
-		_flightReservationService.UpdateFlightReservation(id, status, DateTime.UtcNow, DateTime.UtcNow);
+		_flightReservationService.UpdateFlightReservation(model.Id, status, DateTime.UtcNow, DateTime.UtcNow);
 		return Ok(reservation);
 	}
 	
 	[HttpDelete]
 	[Route("reject")]
-	public ActionResult<FlightReservationModel> RejectReservation([FromRoute] long id)
+	public ActionResult<FlightReservationModel> RejectReservation([FromQuery] long id)
 	{
 		if (!ModelState.IsValid)
 		{
