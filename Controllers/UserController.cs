@@ -113,6 +113,8 @@ public class UserController : ControllerBase
 		
 		var hashedPassword = _passwordHasher.HashPassword(model.Password);
 		
+		model.Abbreviation = model.Name.Substring(0, 1) + model.Surname.Substring(0, 2).ToUpper();
+		
 		_userService.PostUser(model, UserRole.Guest, DateTime.UtcNow, DateTime.UtcNow, "Undefined", birthYear, hashedPassword);
 		return CreatedAtAction(nameof(Get), new { id = model.Id }, model);
 	}
